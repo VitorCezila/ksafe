@@ -1,4 +1,4 @@
-package com.cezila.passwordmanager.domain.utils
+package com.cezila.passwordmanager.core.utils
 
 object Constants {
 
