@@ -1,7 +1,6 @@
 package com.cezila.passwordmanager.ui.app
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.cezila.passwordmanager.R
@@ -16,14 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val buttonGerar = findViewById<Button>(R.id.btn_gerar_senha)
-        val buttonRecuperar = findViewById<Button>(R.id.btn_recuperar_senha)
-
-        buttonGerar.setOnClickListener {
-            viewModel.criarSenha()
-        }
-        buttonRecuperar.setOnClickListener {
-            viewModel.recuperarSenha()
-        }
     }
+
 }

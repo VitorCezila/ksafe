@@ -5,9 +5,12 @@ import com.cezila.passwordmanager.data.database.PasswordDatabase
 import com.cezila.passwordmanager.data.repository.StorePasswordRepositoryImpl
 import com.cezila.passwordmanager.domain.repository.StorePasswordRepository
 import com.cezila.passwordmanager.domain.use_case.DeletePasswordUseCase
+import com.cezila.passwordmanager.domain.use_case.GetPasswordByIdUseCase
 import com.cezila.passwordmanager.domain.use_case.GetPasswordsUseCase
 import com.cezila.passwordmanager.domain.use_case.InsertPasswordUseCase
 import com.cezila.passwordmanager.domain.use_case.PasswordUseCases
+import com.cezila.passwordmanager.domain.use_case.SearchPasswordUseCase
+import com.cezila.passwordmanager.domain.use_case.UpdatePasswordUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +38,10 @@ object StorePasswordModule {
         return PasswordUseCases(
             insertPasswordUseCase = InsertPasswordUseCase(repository, encryptionService),
             deletePasswordUseCase = DeletePasswordUseCase(repository),
-            getPasswordsUseCase = GetPasswordsUseCase(repository)
+            getPasswordsUseCase = GetPasswordsUseCase(repository),
+            getPasswordById = GetPasswordByIdUseCase(repository),
+            searchPasswordUseCase = SearchPasswordUseCase(repository),
+            updatePasswordUseCase = UpdatePasswordUseCase(repository)
         )
     }
 

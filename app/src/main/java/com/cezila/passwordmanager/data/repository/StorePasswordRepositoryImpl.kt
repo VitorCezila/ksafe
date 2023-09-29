@@ -15,25 +15,23 @@ class StorePasswordRepositoryImpl(
     }
 
     override suspend fun getPasswords(): List<Password?> {
-        return dao.getPasswords().map {
-            it?.toPassword()
-        }
+        return dao.getPasswords().map { it?.toPassword() }
     }
 
     override suspend fun getPasswordById(id: Int): Password? {
-        TODO("Not yet implemented")
+        return dao.getPasswordById(id)?.toPassword()
     }
 
     override suspend fun searchPassword(query: String): List<Password?> {
-        TODO("Not yet implemented")
+        return dao.searchPassword(query).map { it?.toPassword() }
     }
 
     override suspend fun updatePassword(password: Password) {
-        TODO("Not yet implemented")
+        dao.updatePassword(password.toEntity())
     }
 
     override suspend fun deletePassword(id: Int) {
-        TODO("Not yet implemented")
+        dao.deletePassword(id)
     }
 
 }

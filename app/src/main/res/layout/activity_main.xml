@@ -6,24 +6,5 @@
     android:layout_height="match_parent"
     tools:context=".ui.app.MainActivity">
 
-    <Button
-        android:id="@+id/btn_gerar_senha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gerar senha"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_recuperar_senha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recuperar senha"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_gerar_senha" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
