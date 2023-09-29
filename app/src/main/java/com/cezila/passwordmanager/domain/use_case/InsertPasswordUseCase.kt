@@ -12,11 +12,13 @@ class InsertPasswordUseCase(
     suspend operator fun invoke(
         title: String? = null,
         login: String? = null,
+        url: String? = null,
         password: String
     ) {
         val passwordObj = Password(
             title = title,
             login = login,
+            url = url,
             encryptedPassword = encryptionService.encrypt(password)
         )
         storePasswordRepository.insertPassword(passwordObj)

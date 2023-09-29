@@ -1,9 +1,9 @@
-package com.cezila.passwordmanager.domain.utils
+package com.cezila.passwordmanager.core.utils
 
 import com.cezila.passwordmanager.core.exception.PasswordCreationLengthException
 import com.cezila.passwordmanager.domain.model.PasswordCharGroup
 import com.cezila.passwordmanager.domain.model.PasswordGenerationParams
-import com.cezila.passwordmanager.domain.utils.Constants.MIN_LENGTH_PASSWORD_GENERATION
+import com.cezila.passwordmanager.core.utils.Constants.MIN_LENGTH_PASSWORD_GENERATION
 
 class PasswordGenerator(
     private val params: PasswordGenerationParams

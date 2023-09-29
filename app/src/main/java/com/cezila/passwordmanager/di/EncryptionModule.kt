@@ -2,7 +2,8 @@ package com.cezila.passwordmanager.di
 
 import com.cezila.passwordmanager.core.encryption.EncryptionService
 import com.cezila.passwordmanager.core.encryption.KeyManager
-import com.cezila.passwordmanager.core.encryption.implementation.AesEncryptionServiceImpl
+import com.cezila.passwordmanager.data.keystore.AesEncryptionServiceImpl
+import com.cezila.passwordmanager.domain.use_case.DecryptPasswordUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +20,15 @@ object EncryptionModule {
         keyManager: KeyManager
     ): EncryptionService {
         return AesEncryptionServiceImpl(
-            secretKey = keyManager.getKey("masterkey_alias")
+            secretKey = keyManager.getSecretKey("masterkey_alias")
         )
     }
 
+    @Provides
+    @Singleton
+    fun provideDecryptPasswordUseCase(
+        encryptionService: EncryptionService
+    ): DecryptPasswordUseCase {
+        return DecryptPasswordUseCase(encryptionService)
+    }
 }

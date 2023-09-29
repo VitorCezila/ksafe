@@ -1,6 +1,8 @@
 package com.cezila.passwordmanager.data.repository
 
 import com.cezila.passwordmanager.data.database.PasswordDao
+import com.cezila.passwordmanager.data.mapper.toEntity
+import com.cezila.passwordmanager.data.mapper.toPassword
 import com.cezila.passwordmanager.domain.model.Password
 import com.cezila.passwordmanager.domain.repository.StorePasswordRepository
 
@@ -9,11 +11,13 @@ class StorePasswordRepositoryImpl(
 ) : StorePasswordRepository {
 
     override suspend fun insertPassword(password: Password) {
-        TODO("Not yet implemented")
+        dao.insertPassword(password.toEntity())
     }
 
     override suspend fun getPasswords(): List<Password?> {
-        TODO("Not yet implemented")
+        return dao.getPasswords().map {
+            it?.toPassword()
+        }
     }
 
     override suspend fun getPasswordById(id: Int): Password? {

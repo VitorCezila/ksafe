@@ -4,6 +4,6 @@ import javax.crypto.SecretKey
 
 fun interface KeyManager {
 
-    fun getKey(alias: String): SecretKey
+    fun getSecretKey(alias: String): SecretKey
 
 }
