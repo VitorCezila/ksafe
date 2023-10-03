@@ -4,7 +4,7 @@ data class PasswordUseCases(
     val insertPasswordUseCase: InsertPasswordUseCase,
     val deletePasswordUseCase: DeletePasswordUseCase,
     val getPasswordsUseCase: GetPasswordsUseCase,
-    val getPasswordById: GetPasswordByIdUseCase,
+    val getPasswordByIdUseCase: GetPasswordByIdUseCase,
     val searchPasswordUseCase: SearchPasswordUseCase,
     val updatePasswordUseCase: UpdatePasswordUseCase
 )

@@ -39,7 +39,7 @@ object StorePasswordModule {
             insertPasswordUseCase = InsertPasswordUseCase(repository, encryptionService),
             deletePasswordUseCase = DeletePasswordUseCase(repository),
             getPasswordsUseCase = GetPasswordsUseCase(repository),
-            getPasswordById = GetPasswordByIdUseCase(repository),
+            getPasswordByIdUseCase = GetPasswordByIdUseCase(repository),
             searchPasswordUseCase = SearchPasswordUseCase(repository),
             updatePasswordUseCase = UpdatePasswordUseCase(repository)
         )
