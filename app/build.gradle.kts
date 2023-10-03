@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.cezila.passwordmanager"
-        minSdk = 24
+        minSdk = 27
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -39,6 +39,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    viewBinding.isEnabled = true
 }
 
 dependencies {
@@ -49,6 +50,10 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.7.2")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
     // Coroutines and Datetime
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

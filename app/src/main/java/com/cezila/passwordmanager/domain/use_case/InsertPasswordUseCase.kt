@@ -10,7 +10,7 @@ class InsertPasswordUseCase(
 ) {
 
     suspend operator fun invoke(
-        title: String? = null,
+        title: String,
         login: String? = null,
         url: String? = null,
         password: String
