@@ -1,10 +1,11 @@
 package com.cezila.passwordmanager.domain.repository
 
+import com.cezila.passwordmanager.core.utils.SimpleResource
 import com.cezila.passwordmanager.domain.model.Password
 
 interface StorePasswordRepository {
 
-    suspend fun insertPassword(password: Password)
+    suspend fun insertPassword(password: Password): SimpleResource
 
     suspend fun getPasswords(): List<Password?>
 
