@@ -1,5 +1,7 @@
 package com.cezila.passwordmanager.data.repository
 
+import com.cezila.passwordmanager.core.utils.Resource
+import com.cezila.passwordmanager.core.utils.SimpleResource
 import com.cezila.passwordmanager.data.database.PasswordDao
 import com.cezila.passwordmanager.data.mapper.toEntity
 import com.cezila.passwordmanager.data.mapper.toPassword
@@ -10,8 +12,9 @@ class StorePasswordRepositoryImpl(
     private val dao: PasswordDao
 ) : StorePasswordRepository {
 
-    override suspend fun insertPassword(password: Password) {
+    override suspend fun insertPassword(password: Password): SimpleResource {
         dao.insertPassword(password.toEntity())
+        return Resource.Success(Unit)
     }
 
     override suspend fun getPasswords(): List<Password?> {

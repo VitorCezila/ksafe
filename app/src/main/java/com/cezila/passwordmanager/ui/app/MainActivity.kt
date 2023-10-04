@@ -1,8 +1,10 @@
 package com.cezila.passwordmanager.ui.app
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.cezila.passwordmanager.R
@@ -20,8 +22,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        navController
+            .addOnDestinationChangedListener { _, destination, _ ->
+                when (destination.id) {
+                    R.id.homeFragment, R.id.analyzePasswordFragment, R.id.generatePasswordFragment -> {
+                        binding.bottomNavigationView.visibility = View.VISIBLE
+                    }
+
+                    else -> {
+                        binding.bottomNavigationView.visibility = View.VISIBLE
+                    }
+                }
+            }
         binding.bottomNavigationView.setupWithNavController(navController)
     }
 }
