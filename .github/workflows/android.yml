@@ -9,6 +9,9 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v1
 
+      - name: Give permission
+        run: chmod +x gradlew
+
       - name: Run lint
         run: ./gradlew lintDebug
 
@@ -25,6 +28,9 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v1
 
+      - name: Give permission
+        run: chmod +x gradlew
+        
       - name: Run tests
         run: ./gradlew testDebugUnitTest
 
