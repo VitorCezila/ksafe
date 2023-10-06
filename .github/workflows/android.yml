@@ -4,14 +4,20 @@ on: pull_request
 
 jobs:
   lint:
+    name: Lint check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
         uses: actions/checkout@v1
 
-      - name: Give permission
+      - name: Make Gradle executable
         run: chmod +x gradlew
-
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          distribution: zulu
+          java-version: 17
+          
       - name: Run lint
         run: ./gradlew lintDebug
 
@@ -28,7 +34,7 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v1
 
-      - name: Give permission
+      - name: Make Gradle executable
         run: chmod +x gradlew
         
       - name: Run tests
