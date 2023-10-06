@@ -1,0 +1,35 @@
+name: Code Checks
+
+on: pull_request
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v1
+
+      - name: Run lint
+        run: ./gradlew lintDebug
+
+      - name: Upload html test report
+        uses: actions/upload-artifact@v1
+        with:
+          name: lint.html
+          path: app/build/reports/lint-results-debug.html
+
+  unit-test:
+    needs: [ lint ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v1
+
+      - name: Run tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v1
+        with:
+          name: unit_test_report
+          path: app/build/reports/tests/testDebugUnitTest/
