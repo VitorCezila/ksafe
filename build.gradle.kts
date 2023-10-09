@@ -19,7 +19,7 @@ subprojects {
                 property("sonar.projectKey", "PasswordManager")
                 property("sonar.host", "http://localhost:9000")
                 property("sonar.sources", "src/main/java")
-                property("sonar.tests", "src/test/")
+                property("sonar.tests", "src/test/java")
                 property("sonar.core.codeCoveragePlugin", "jacoco")
                 property("sonar.language", "kotlin")
                 property("sonar.sourceEncoding", "UTF-8")
@@ -30,11 +30,11 @@ subprojects {
                 )
                 property(
                     "sonar.junit.reportPaths",
-                    "$buildDir/test-results/testDebugUnitTest/"
+                    "$buildDir/test-results/testDebugUnitTest"
                 )
                 property(
                     "sonar.jacoco.reportPaths",
-                    "$buildDir/reports/jacocoHtml/"
+                    "$buildDir/jacoco/**.exec"
                 )
                 property(
                     "sonar.exclusions", "**/samples/**" +
