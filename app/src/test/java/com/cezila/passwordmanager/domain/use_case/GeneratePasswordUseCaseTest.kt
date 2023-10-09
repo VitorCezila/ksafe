@@ -13,7 +13,7 @@ import org.junit.Test
 class GeneratePasswordUseCaseTest {
 
     @Test
-    fun `generate password with all parameters`() = runTest {
+    fun `generatePassword with all parameters should include digits, lowercase, uppercase, and special symbols`() = runTest {
         val params = PasswordGenerationParams(
             length = 10,
             charGroups = listOf(
@@ -33,7 +33,7 @@ class GeneratePasswordUseCaseTest {
     }
 
     @Test
-    fun `generate password with uppercase parameter`() = runTest {
+    fun `generatePassword with uppercase parameter should include digits, lowercase and uppercase latters`() = runTest {
         val params = PasswordGenerationParams(
             length = 10,
             charGroups = listOf(PasswordCharGroup.UppercaseLetters)
@@ -49,7 +49,7 @@ class GeneratePasswordUseCaseTest {
     }
 
     @Test
-    fun `generate password with special symbol parameter`() = runTest {
+    fun `generatePassword with special symbol parameter should include digits, lowercase and special symbols`() = runTest {
         val params = PasswordGenerationParams(
             length = 10,
             charGroups = listOf(PasswordCharGroup.Special)
@@ -65,7 +65,7 @@ class GeneratePasswordUseCaseTest {
     }
 
     @Test
-    fun `generate password without specific parameters`() = runTest {
+    fun `generatePassword without specific parameters should include digits and lowercase letters`() = runTest {
         val params = PasswordGenerationParams(
             length = 10,
             charGroups = emptyList()
@@ -80,7 +80,7 @@ class GeneratePasswordUseCaseTest {
     }
 
     @Test(expected = PasswordCreationLengthException::class)
-    fun `generate password with invalid length`() = runTest {
+    fun `generatePassword with invalid length should throw PasswordCreationLengthException`() = runTest {
         val params = PasswordGenerationParams(
             length = 5, charGroups = listOf(
                 PasswordCharGroup.UppercaseLetters,
