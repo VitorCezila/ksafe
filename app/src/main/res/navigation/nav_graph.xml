@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.cezila.passwordmanager.ui.home_screen.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_createPasswordFragment"
+            app:destination="@id/createPasswordFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_passwordDetailFragment"
+            app:destination="@id/passwordDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPasswordFragment"
+        android:name="com.cezila.passwordmanager.ui.create_password_screen.CreatePasswordFragment"
+        android:label="fragment_create_password"
+        tools:layout="@layout/fragment_create_password" >
+        <action
+            android:id="@+id/action_createPasswordFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordDetailFragment"
+        android:name="com.cezila.passwordmanager.ui.password_detail_screen.PasswordDetailFragment"
+        android:label="fragment_password_detail"
+        tools:layout="@layout/fragment_password_detail" >
+        <action
+            android:id="@+id/action_passwordDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="password"
+            app:argType="com.cezila.passwordmanager.domain.model.Password"/>
+    </fragment>
+    <fragment
+        android:id="@+id/analyzePasswordFragment"
+        android:name="com.cezila.passwordmanager.ui.analyze_password_screen.AnalyzePasswordFragment"
+        android:label="fragment_analyze_password"
+        tools:layout="@layout/fragment_analyze_password" />
+    <fragment
+        android:id="@+id/generatePasswordFragment"
+        android:name="com.cezila.passwordmanager.ui.generate_password_screen.GeneratePasswordFragment"
+        android:label="fragment_generate_password"
+        tools:layout="@layout/fragment_generate_password" />
+</navigation>
