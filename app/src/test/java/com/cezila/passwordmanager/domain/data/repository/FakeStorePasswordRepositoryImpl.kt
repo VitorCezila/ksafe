@@ -38,7 +38,7 @@ class FakeStorePasswordRepositoryImpl : StorePasswordRepository {
         }
     }
 
-    override suspend fun deletePassword(id: Int) {
+    override suspend fun deletePassword(id: Int?) {
         storedPasswords.removeAll { it.id == id }
     }
 }

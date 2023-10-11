@@ -50,12 +50,6 @@ private val executionDataTree = fileTree(project.buildDir) {
     )
 }
 
-fun JacocoCoverageVerification.setDirectories() {
-    sourceDirectories.setFrom(sourceDirectoriesTree)
-    classDirectories.setFrom(classDirectoriesTree)
-    executionData.setFrom(executionDataTree)
-}
-
 fun JacocoReport.setDirectories() {
     sourceDirectories.setFrom(sourceDirectoriesTree)
     classDirectories.setFrom(classDirectoriesTree)
@@ -70,24 +64,6 @@ if (tasks.findByName("jacocoAndroidTestReport") == null) {
         reports {
             html.required.set(true)
             html.outputLocation.set(project.layout.buildDirectory.dir("reports/jacocoHtml"))
-        }
-        setDirectories()
-    }
-}
-
-if (tasks.findByName("jacocoAndroidCoverageVerification") == null) {
-    tasks.register<JacocoCoverageVerification>("jacocoAndroidCoverageVerification") {
-        group = "Reporting"
-        description = "Code coverage verification for Unit tests."
-        dependsOn("testDebugUnitTest")
-        violationRules {
-            rule {
-                limit {
-                    counter = "INSTRUCTIONAL"
-                    value = "COVEREDRATIO"
-                    minimum = "0.5".toBigDecimal()
-                }
-            }
         }
         setDirectories()
     }

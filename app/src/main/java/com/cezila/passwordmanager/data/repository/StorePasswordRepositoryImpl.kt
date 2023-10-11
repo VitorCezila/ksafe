@@ -33,7 +33,7 @@ class StorePasswordRepositoryImpl(
         dao.updatePassword(password.toEntity())
     }
 
-    override suspend fun deletePassword(id: Int) {
+    override suspend fun deletePassword(id: Int?) {
         dao.deletePassword(id)
     }
 

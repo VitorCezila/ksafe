@@ -15,6 +15,6 @@ interface StorePasswordRepository {
 
     suspend fun updatePassword(password: Password)
 
-    suspend fun deletePassword(id: Int)
+    suspend fun deletePassword(id: Int?)
 
 }

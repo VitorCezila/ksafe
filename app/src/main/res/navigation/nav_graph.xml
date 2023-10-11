@@ -34,9 +34,9 @@
         <action
             android:id="@+id/action_passwordDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <argument
-            android:name="password"
-            app:argType="com.cezila.passwordmanager.domain.model.Password"/>
+        <action
+            android:id="@+id/action_passwordDetailFragment_to_updatePasswordFragment"
+            app:destination="@id/updatePasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/analyzePasswordFragment"
@@ -48,4 +48,9 @@
         android:name="com.cezila.passwordmanager.ui.generate_password_screen.GeneratePasswordFragment"
         android:label="fragment_generate_password"
         tools:layout="@layout/fragment_generate_password" />
+    <fragment
+        android:id="@+id/updatePasswordFragment"
+        android:name="com.cezila.passwordmanager.ui.update_password_screen.UpdatePasswordFragment"
+        android:label="fragment_update_password"
+        tools:layout="@layout/fragment_update_password" />
 </navigation>
