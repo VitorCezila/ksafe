@@ -5,7 +5,7 @@ import com.cezila.passwordmanager.domain.repository.StorePasswordRepository
 class DeletePasswordUseCase(
     private val storePasswordRepository: StorePasswordRepository,
 ) {
-    suspend operator fun invoke(id: Int) {
+    suspend operator fun invoke(id: Int?) {
         storePasswordRepository.deletePassword(id)
     }
 }

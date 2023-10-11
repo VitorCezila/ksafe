@@ -57,4 +57,22 @@ class DeletePasswordUseCaseTest {
         assertNotNull(result)
         assertEquals(result, password)
     }
+
+    @Test
+    fun `deletePassword with id null should do nothing`() = runTest {
+        val password = Password(
+            id = 1,
+            title = "Example",
+            login = "user@example.com",
+            url = "https://example.com",
+            encryptedPassword = "encrypted_password"
+        )
+        repository.insertPassword(password)
+
+        deletePasswordUseCase(null)
+
+        val result = repository.getPasswordById(1)
+        assertNotNull(result)
+        assertEquals(result, password)
+    }
 }

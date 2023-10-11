@@ -33,5 +33,5 @@ interface PasswordDao {
     suspend fun updatePassword(password: PasswordEntity)
 
     @Query("DELETE from password_model WHERE id = :id")
-    suspend fun deletePassword(id: Int)
+    suspend fun deletePassword(id: Int?)
 }
