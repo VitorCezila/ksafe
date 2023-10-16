@@ -2,8 +2,8 @@ package com.cezila.passwordmanager.domain.use_case
 
 import com.cezila.passwordmanager.core.encryption.EncryptionService
 import com.cezila.passwordmanager.core.utils.Resource
-import com.cezila.passwordmanager.domain.data.keystore.FakeEncryptionServiceImpl
-import com.cezila.passwordmanager.domain.data.repository.FakeStorePasswordRepositoryImpl
+import com.cezila.passwordmanager.data.keystore.FakeEncryptionServiceImpl
+import com.cezila.passwordmanager.data.repository.FakeStorePasswordRepositoryImpl
 import com.cezila.passwordmanager.domain.repository.StorePasswordRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
