@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.cezila.passwordmanager"
+    namespace = "com.cezila.ksafe"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.cezila.passwordmanager"
+        applicationId = "com.cezila.ksafe"
         minSdk = 27
         targetSdk = 33
         versionCode = 1
