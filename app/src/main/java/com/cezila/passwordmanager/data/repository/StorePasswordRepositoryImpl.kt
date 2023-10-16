@@ -29,8 +29,9 @@ class StorePasswordRepositoryImpl(
         return dao.searchPassword(query).map { it?.toPassword() }
     }
 
-    override suspend fun updatePassword(password: Password) {
+    override suspend fun updatePassword(password: Password): SimpleResource {
         dao.updatePassword(password.toEntity())
+        return Resource.Success(Unit)
     }
 
     override suspend fun deletePassword(id: Int?) {

@@ -13,7 +13,7 @@ interface StorePasswordRepository {
 
     suspend fun searchPassword(query: String): List<Password?>
 
-    suspend fun updatePassword(password: Password)
+    suspend fun updatePassword(password: Password): SimpleResource
 
     suspend fun deletePassword(id: Int?)
 

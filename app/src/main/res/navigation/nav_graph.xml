@@ -52,5 +52,9 @@
         android:id="@+id/updatePasswordFragment"
         android:name="com.cezila.passwordmanager.ui.update_password_screen.UpdatePasswordFragment"
         android:label="fragment_update_password"
-        tools:layout="@layout/fragment_update_password" />
+        tools:layout="@layout/fragment_update_password" >
+        <action
+            android:id="@+id/action_updatePasswordFragment_to_passwordDetailFragment"
+            app:destination="@id/passwordDetailFragment" />
+    </fragment>
 </navigation>

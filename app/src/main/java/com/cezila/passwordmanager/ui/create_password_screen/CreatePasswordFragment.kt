@@ -9,6 +9,7 @@ import com.cezila.passwordmanager.R
 import com.cezila.passwordmanager.core.utils.Resource
 import com.cezila.passwordmanager.databinding.FragmentCreatePasswordBinding
 import com.cezila.passwordmanager.ui.utils.navTo
+import com.cezila.passwordmanager.ui.utils.toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,11 +45,11 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
             when (result) {
                 is Resource.Success -> {
                     clearEditTexts()
-                    Toast.makeText(requireContext(), "Password Created", Toast.LENGTH_SHORT).show()
+                    toast("Password Created")
                 }
 
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                    toast(result.message)
                 }
 
                 is Resource.Loading -> {}
