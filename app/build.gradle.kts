@@ -19,7 +19,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ksp {
-            arg("room.schemaLoation", "$projectDir/schemas")
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
 
