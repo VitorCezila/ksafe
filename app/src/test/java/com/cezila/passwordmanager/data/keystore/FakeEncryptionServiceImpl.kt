@@ -1,4 +1,4 @@
-package com.cezila.passwordmanager.domain.data.keystore
+package com.cezila.passwordmanager.data.keystore
 
 import com.cezila.passwordmanager.core.encryption.EncryptionService
 

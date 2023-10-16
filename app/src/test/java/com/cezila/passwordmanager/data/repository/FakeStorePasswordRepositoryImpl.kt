@@ -1,4 +1,4 @@
-package com.cezila.passwordmanager.domain.data.repository
+package com.cezila.passwordmanager.data.repository
 
 import com.cezila.passwordmanager.core.utils.Resource
 import com.cezila.passwordmanager.core.utils.SimpleResource

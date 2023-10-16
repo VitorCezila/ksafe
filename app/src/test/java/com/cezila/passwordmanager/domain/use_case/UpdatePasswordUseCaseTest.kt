@@ -1,7 +1,7 @@
 package com.cezila.passwordmanager.domain.use_case
 
 import com.cezila.passwordmanager.core.utils.Resource
-import com.cezila.passwordmanager.domain.data.repository.FakeStorePasswordRepositoryImpl
+import com.cezila.passwordmanager.data.repository.FakeStorePasswordRepositoryImpl
 import com.cezila.passwordmanager.domain.model.Password
 import com.cezila.passwordmanager.domain.repository.StorePasswordRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
