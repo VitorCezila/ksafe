@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.cezila.passwordmanager.R
 import com.cezila.passwordmanager.core.utils.copyToClipboard
 import com.cezila.passwordmanager.databinding.FragmentPasswordDetailBinding
-import com.cezila.passwordmanager.ui.home_screen.HomeFragment
+import com.cezila.passwordmanager.ui.utils.ArgumentsId.TAG_PASSWORD_ID
 import com.cezila.passwordmanager.ui.utils.enable
 import com.cezila.passwordmanager.ui.utils.navTo
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,7 +23,7 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
     private lateinit var binding: FragmentPasswordDetailBinding
 
     private val passwordId: Int by lazy {
-        arguments?.getInt(HomeFragment.SHOW_ID) ?: -1
+        arguments?.getInt(TAG_PASSWORD_ID) ?: -1
     }
 
     private var passwordVisibility: Boolean = false
@@ -93,6 +94,7 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
         url: String?
     ) {
         with(binding) {
+            showViews()
             tvPasswordTitle.text = title
             tvPassword.text = getHiddenPassword(decryptedPassword)
             tvDate.text = creationTimestamp
@@ -129,10 +131,12 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
             }
 
             btnUpdate.setOnClickListener {
-                navTo(R.id.action_passwordDetailFragment_to_updatePasswordFragment)
+                navTo(
+                    R.id.action_passwordDetailFragment_to_updatePasswordFragment,
+                    bundleOf(TAG_PASSWORD_ID to id)
+                )
             }
 
-            showViews()
             pbDetails.enable(false)
             tvDetailError.enable(false)
         }

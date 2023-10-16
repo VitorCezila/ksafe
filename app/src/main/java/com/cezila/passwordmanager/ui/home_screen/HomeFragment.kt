@@ -1,7 +1,6 @@
 package com.cezila.passwordmanager.ui.home_screen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
@@ -12,6 +11,7 @@ import com.cezila.passwordmanager.R
 import com.cezila.passwordmanager.core.utils.copyToClipboard
 import com.cezila.passwordmanager.databinding.FragmentHomeBinding
 import com.cezila.passwordmanager.domain.model.Password
+import com.cezila.passwordmanager.ui.utils.ArgumentsId.TAG_PASSWORD_ID
 import com.cezila.passwordmanager.ui.utils.MarginItemDecoration
 import com.cezila.passwordmanager.ui.utils.enable
 import com.cezila.passwordmanager.ui.utils.navTo
@@ -70,7 +70,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun onPasswordClicked(password: Password) {
-        navTo(R.id.action_homeFragment_to_passwordDetailFragment, bundleOf(SHOW_ID to password.id))
+        navTo(R.id.action_homeFragment_to_passwordDetailFragment, bundleOf(TAG_PASSWORD_ID to password.id))
     }
 
     private fun onCopyContentClicked(encryptedPassword: String) {
@@ -83,9 +83,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     ) {
         binding.contentRecyclerView.enable(enableContentList)
         binding.noResultsLayout.enable(enableNotFoundContent)
-    }
-
-    companion object {
-        const val SHOW_ID = "password"
     }
 }
