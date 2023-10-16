@@ -30,12 +30,13 @@ class FakeStorePasswordRepositoryImpl : StorePasswordRepository {
         }
     }
 
-    override suspend fun updatePassword(password: Password) {
+    override suspend fun updatePassword(password: Password): SimpleResource {
         val existingPassword = storedPasswords.find { it.id == password.id }
         if (existingPassword != null) {
             storedPasswords.remove(existingPassword)
             storedPasswords.add(password)
         }
+        return Resource.Success(Unit)
     }
 
     override suspend fun deletePassword(id: Int?) {
