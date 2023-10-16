@@ -15,8 +15,8 @@ subprojects {
         project.apply(from = "../jacoco-report.gradle.kts")
         sonar {
             properties {
-                property("sonar.projectName", "PasswordManager")
-                property("sonar.projectKey", "PasswordManager")
+                property("sonar.projectName", "KSafe")
+                property("sonar.projectKey", "KSafe")
                 property("sonar.host", "http://localhost:9000")
                 property("sonar.sources", "src/main/java")
                 property("sonar.tests", "src/test/java")
