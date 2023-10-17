@@ -12,15 +12,15 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/md_theme_light_primary"
-        android:contentDescription="Create a new record"
+        android:backgroundTint="?attr/colorPrimary"
+        android:contentDescription="@string/create_a_new_record"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="#FFFFFFFF" />
 
     <ImageView
-        android:id="@+id/logoImageView"
+        android:id="@+id/iv_logo"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
@@ -28,10 +28,10 @@
         android:src="@drawable/ic_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/md_theme_light_primary" />
+        app:tint="?attr/colorPrimary" />
 
     <EditText
-        android:id="@+id/searchEditText"
+        android:id="@+id/et_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -39,29 +39,29 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_edittext_selector"
         android:drawableStart="@drawable/ic_search"
-        android:hint="Search..."
+        android:hint="@string/search"
         android:textColorHint="#888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contentRecyclerView"
+        android:id="@+id/rv_passwords"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
         android:layout_marginTop="16dp"
+        android:clipToPadding="false"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchEditText"
+        app:layout_constraintTop_toBottomOf="@+id/et_search"
         tools:listitem="@layout/password_item" />
 
     <LinearLayout
-        android:id="@+id/noResultsLayout"
+        android:id="@+id/ll_no_results"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -69,7 +69,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText"
+        app:layout_constraintTop_toBottomOf="@id/et_search"
         tools:visibility="gone">
 
         <ImageView
@@ -80,14 +80,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No results"
+            android:text="@string/no_results"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Não conseguimos encontrar nenhuma senha"
+            android:text="@string/data_not_found"
             android:textSize="14sp" />
 
     </LinearLayout>

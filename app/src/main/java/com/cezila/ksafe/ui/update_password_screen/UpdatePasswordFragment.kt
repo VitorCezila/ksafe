@@ -71,26 +71,26 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
             etPassword.setText(password)
 
             if (!login.isNullOrEmpty()) {
-                etEmailUsername.setText(login)
+                etLogin.setText(login)
             }
 
             if (!url.isNullOrEmpty()) {
                 etUrl.setText(url)
             }
 
-            updateButton.setOnClickListener {
+            btnUpdate.setOnClickListener {
                 viewModel.onEvent(
                     UpdatePasswordEvent.OnUpdatePasswordClicked(
                         id = passwordId,
                         title = etName.text.toString(),
                         password = etPassword.text.toString(),
-                        login = etEmailUsername.text.toString(),
+                        login = etLogin.text.toString(),
                         url = etUrl.text.toString()
                     )
                 )
             }
 
-            binding.backButton.setOnClickListener {
+            binding.btnBack.setOnClickListener {
                 requireActivity().onBackPressed()
             }
 
@@ -128,17 +128,13 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
         with(binding) {
             tvUpdateError.enable(true)
             pbUpdate.enable(true)
-            backButton.enable(true)
+            btnBack.enable(true)
             tvUpdatePasswordTitle.enable(true)
-            tvNameHint.enable(true)
             etName.enable(true)
-            tvUrlHint.enable(true)
             etUrl.enable(true)
-            tvEmailUsernameHint.enable(true)
-            etEmailUsername.enable(true)
-            tvPasswordHint.enable(true)
+            etLogin.enable(true)
             etPassword.enable(true)
-            updateButton.enable(true)
+            btnUpdate.enable(true)
         }
     }
 
@@ -146,17 +142,13 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
         with(binding) {
             tvUpdateError.enable(false)
             pbUpdate.enable(false)
-            backButton.enable(false)
+            btnBack.enable(false)
             tvUpdatePasswordTitle.enable(false)
-            tvNameHint.enable(false)
             etName.enable(false)
-            tvUrlHint.enable(false)
             etUrl.enable(false)
-            tvEmailUsernameHint.enable(false)
-            etEmailUsername.enable(false)
-            tvPasswordHint.enable(false)
+            etLogin.enable(false)
             etPassword.enable(false)
-            updateButton.enable(false)
+            btnUpdate.enable(false)
         }
     }
 

@@ -3,7 +3,7 @@ package com.cezila.ksafe.ui.home_screen
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cezila.ksafe.R
@@ -17,10 +17,10 @@ class HomeAdapter(
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     inner class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val iconTextView: TextView = itemView.findViewById(R.id.iconTextView)
-        val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
-        val loginTextView: TextView = itemView.findViewById(R.id.loginTextView)
-        val copyButton: ImageButton = itemView.findViewById(R.id.copyButton)
+        val iconTextView: TextView = itemView.findViewById(R.id.tv_icon)
+        val titleTextView: TextView = itemView.findViewById(R.id.tv_title)
+        val loginTextView: TextView = itemView.findViewById(R.id.tv_login)
+        val copyButton: ImageView = itemView.findViewById(R.id.btn_copy)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
