@@ -113,7 +113,7 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
                 tvUrl.text = url
             }
 
-            backButton.setOnClickListener {
+            btnBack.setOnClickListener {
                 backFragment()
             }
 
@@ -130,7 +130,7 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
                 backFragment()
             }
 
-            btnUpdate.setOnClickListener {
+            btnUpdateDetail.setOnClickListener {
                 navTo(
                     R.id.action_passwordDetailFragment_to_updatePasswordFragment,
                     bundleOf(TAG_PASSWORD_ID to id)

@@ -27,17 +27,17 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
     }
 
     private fun addListeners() {
-        binding.saveButton.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             viewModel.onEvent(
                 CreatePasswordEvent.OnCreateClicked(
                     title = binding.etName.text.toString(),
                     password = binding.etPassword.text.toString(),
-                    login = binding.etEmailUsername.text.toString(),
+                    login = binding.etLogin.text.toString(),
                     url = binding.etUrl.text.toString()
                 )
             )
         }
-        binding.backButton.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             navTo(R.id.action_createPasswordFragment_to_homeFragment)
         }
         viewModel.result.observe(viewLifecycleOwner) { result ->
@@ -57,10 +57,10 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
     }
 
     private fun clearEditTexts() {
-        binding.etName.text.clear()
-        binding.etPassword.text.clear()
-        binding.etEmailUsername.text.clear()
-        binding.etUrl.text.clear()
+        binding.etName.text?.clear()
+        binding.etPassword.text?.clear()
+        binding.etLogin.text?.clear()
+        binding.etUrl.text?.clear()
     }
 
 }

@@ -30,7 +30,7 @@ class GeneratePasswordFragment : Fragment(R.layout.fragment_generate_password) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeState()
-        binding.backButton.setOnClickListener { requireActivity().onBackPressed() }
+        binding.btnBack.setOnClickListener { requireActivity().onBackPressed() }
     }
 
     private fun observeState() {
@@ -92,7 +92,7 @@ class GeneratePasswordFragment : Fragment(R.layout.fragment_generate_password) {
     private fun showViews() {
         with(binding) {
             tvGenerateError.enable(true)
-            backButton.enable(true)
+            btnBack.enable(true)
             tvGenerateNew.enable(true)
             tvPasswordGenerated.enable(true)
             tvNameHint.enable(true)
@@ -105,7 +105,7 @@ class GeneratePasswordFragment : Fragment(R.layout.fragment_generate_password) {
     private fun hideViews() {
         with(binding) {
             tvGenerateError.enable(false)
-            backButton.enable(false)
+            btnBack.enable(false)
             tvGenerateNew.enable(false)
             tvPasswordGenerated.enable(false)
             tvNameHint.enable(false)

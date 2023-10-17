@@ -31,7 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initViews() {
-        binding.contentRecyclerView.apply {
+        binding.rvPasswords.apply {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.mergin)))
         }
@@ -49,7 +49,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     enableNotFoundContent = false,
                     enableContentList = true
                 )
-                binding.contentRecyclerView.adapter = HomeAdapter(
+                binding.rvPasswords.adapter = HomeAdapter(
                     passwords = passwords,
                     onItemClicked = ::onPasswordClicked,
                     onCopyClicked = ::onCopyContentClicked
@@ -64,7 +64,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.fabNewPassword.setOnClickListener {
             navTo(R.id.action_homeFragment_to_createPasswordFragment)
         }
-        binding.searchEditText.addTextChangedListener {
+        binding.etSearch.addTextChangedListener {
             viewModel.onEvent(HomeEvent.OnSearch(it.toString()))
         }
     }
@@ -81,7 +81,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         enableNotFoundContent: Boolean,
         enableContentList: Boolean
     ) {
-        binding.contentRecyclerView.enable(enableContentList)
-        binding.noResultsLayout.enable(enableNotFoundContent)
+        binding.rvPasswords.enable(enableContentList)
+        binding.llNoResults.enable(enableNotFoundContent)
     }
 }
