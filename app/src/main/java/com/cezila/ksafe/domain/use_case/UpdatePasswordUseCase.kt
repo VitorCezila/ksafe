@@ -12,7 +12,6 @@ class UpdatePasswordUseCase(
 
     suspend operator fun invoke(password: Password): UpdatePasswordResult {
         val titleError = ValidationUtil.basicValidation(password.title)
-        Log.d("UpdatePasswordUseCase", "EncryptedPassword: ${password.encryptedPassword}")
         val passwordError = ValidationUtil.basicValidation(password.encryptedPassword)
 
         if (titleError != null || passwordError != null) {
