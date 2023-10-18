@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.cezila.ksafe.R
@@ -12,6 +13,7 @@ import com.cezila.ksafe.databinding.FragmentUpdatePasswordBinding
 import com.cezila.ksafe.ui.utils.ArgumentsId.TAG_PASSWORD_ID
 import com.cezila.ksafe.ui.utils.enable
 import com.cezila.ksafe.ui.utils.navTo
+import com.cezila.ksafe.ui.utils.showSnackbar
 import com.cezila.ksafe.ui.utils.toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,8 +49,10 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
             when (state) {
                 is UpdatePasswordState.Opened -> renderOpenState()
                 is UpdatePasswordState.Loading -> renderLoadingState()
-                is UpdatePasswordState.ShowError -> renderShowErrorState(state.errorMessage)
+                is UpdatePasswordState.UnknownError -> renderUnknownErrorState()
                 is UpdatePasswordState.UpdateSuccess -> renderUpdateSuccessState()
+                is UpdatePasswordState.TitleEmptyError -> renderTitleEmptyError()
+                is UpdatePasswordState.PasswordEmptyError -> renderPasswordEmptyErrorState()
                 is UpdatePasswordState.ShowingPasswordInfo -> renderShowPasswordInfoState(
                     title = state.title,
                     password = state.password,
@@ -57,6 +61,16 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
                 )
             }
         }
+    }
+
+    private fun renderPasswordEmptyErrorState() {
+        binding.pbUpdate.enable(false)
+        binding.tiPassword.error = "Password field cannot be empty"
+    }
+
+    private fun renderTitleEmptyError() {
+        binding.pbUpdate.enable(false)
+        binding.tiName.error = "Name field cannot be empty"
     }
 
     private fun renderShowPasswordInfoState(
@@ -69,6 +83,13 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
             showViews()
             etName.setText(title)
             etPassword.setText(password)
+
+            etName.doOnTextChanged { _, _, _, _ ->
+                tiName.error = null
+            }
+            etPassword.doOnTextChanged { _, _, _, _ ->
+                tiPassword.error = null
+            }
 
             if (!login.isNullOrEmpty()) {
                 etLogin.setText(login)
@@ -95,16 +116,17 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
             }
 
             pbUpdate.enable(false)
-            tvUpdateError.enable(false)
         }
     }
 
-    private fun renderShowErrorState(message: String?) {
-        toast(message)
+    private fun renderUnknownErrorState() {
+        toast("Unknown Error")
     }
 
     private fun renderUpdateSuccessState() {
-        toast("Password Updated Successfully")
+        view?.let {
+            showSnackbar(it, "Password updated successfully")
+        }
         navTo(
             R.id.action_updatePasswordFragment_to_passwordDetailFragment,
             bundleOf(TAG_PASSWORD_ID to passwordId)
@@ -118,7 +140,7 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
 
     private fun renderOpenState() {
         if (passwordId < 0) {
-            renderShowErrorState("Unknown Error")
+            renderUnknownErrorState()
         } else {
             viewModel.onEvent(UpdatePasswordEvent.GetPasswordInfo(passwordId))
         }
@@ -126,28 +148,26 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
 
     private fun showViews() {
         with(binding) {
-            tvUpdateError.enable(true)
             pbUpdate.enable(true)
             btnBack.enable(true)
             tvUpdatePasswordTitle.enable(true)
-            etName.enable(true)
-            etUrl.enable(true)
-            etLogin.enable(true)
-            etPassword.enable(true)
+            tiName.enable(true)
+            tiUrl.enable(true)
+            tiLogin.enable(true)
+            tiPassword.enable(true)
             btnUpdate.enable(true)
         }
     }
 
     private fun hideViews() {
         with(binding) {
-            tvUpdateError.enable(false)
             pbUpdate.enable(false)
             btnBack.enable(false)
             tvUpdatePasswordTitle.enable(false)
-            etName.enable(false)
-            etUrl.enable(false)
-            etLogin.enable(false)
-            etPassword.enable(false)
+            tiName.enable(false)
+            tiUrl.enable(false)
+            tiLogin.enable(false)
+            tiPassword.enable(false)
             btnUpdate.enable(false)
         }
     }

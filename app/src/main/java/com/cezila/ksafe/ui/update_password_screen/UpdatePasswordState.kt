@@ -5,7 +5,9 @@ sealed class UpdatePasswordState {
     data object Opened : UpdatePasswordState()
     data object Loading : UpdatePasswordState()
     data object UpdateSuccess : UpdatePasswordState()
-    data class ShowError(val errorMessage: String? = null): UpdatePasswordState()
+    data object TitleEmptyError : UpdatePasswordState()
+    data object PasswordEmptyError : UpdatePasswordState()
+    data object UnknownError: UpdatePasswordState()
 
     data class ShowingPasswordInfo(
         val title: String,

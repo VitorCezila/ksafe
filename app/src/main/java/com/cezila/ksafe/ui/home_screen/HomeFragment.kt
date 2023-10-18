@@ -1,6 +1,7 @@
 package com.cezila.ksafe.ui.home_screen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
@@ -27,39 +28,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
         initViews()
-        addObservers()
+        observeState()
     }
 
     private fun initViews() {
         binding.rvPasswords.apply {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.mergin)))
-        }
-    }
-
-    private fun addObservers() {
-        viewModel.passwords.observe(viewLifecycleOwner) { passwords ->
-            if (passwords.isEmpty()) {
-                setupUiStates(
-                    enableNotFoundContent = true,
-                    enableContentList = false
-                )
-            } else {
-                setupUiStates(
-                    enableNotFoundContent = false,
-                    enableContentList = true
-                )
-                binding.rvPasswords.adapter = HomeAdapter(
-                    passwords = passwords,
-                    onItemClicked = ::onPasswordClicked,
-                    onCopyClicked = ::onCopyContentClicked
-                )
-            }
-        }
-        viewModel.copiedPassword.observe(viewLifecycleOwner) { copiedPassword ->
-            if (copiedPassword.isNotBlank()) {
-                copyToClipboard(copiedPassword, requireContext())
-            }
         }
         binding.fabNewPassword.setOnClickListener {
             navTo(R.id.action_homeFragment_to_createPasswordFragment)
@@ -69,19 +44,82 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    private fun observeState() {
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is HomeState.Opened -> renderOpenedState()
+                is HomeState.Loading -> renderLoadingState()
+                is HomeState.FetchPasswordResult -> renderFetchPasswordResult(state.passwords)
+                is HomeState.CopiedPassword -> renderCopiedPasswordState(state.decryptedPassword)
+            }
+        }
+    }
+
+    private fun renderOpenedState() {
+        viewModel.onEvent(HomeEvent.GetAllPasswords)
+    }
+
+    private fun renderLoadingState() {
+        with(binding) {
+            hideViews()
+            pbHome.enable(true)
+        }
+    }
+
+    private fun renderFetchPasswordResult(passwords: List<Password?>) {
+        with(binding) {
+            showViews()
+            pbHome.enable(false)
+            if (passwords.isEmpty()) {
+                rvPasswords.enable(false)
+                llNoResults.enable(true)
+            } else {
+                rvPasswords.enable(true)
+                llNoResults.enable(false)
+                rvPasswords.adapter = HomeAdapter(
+                    passwords = passwords,
+                    onItemClicked = ::onPasswordClicked,
+                    onCopyClicked = ::onCopyContentClicked
+                )
+
+            }
+        }
+    }
+
+    private fun renderCopiedPasswordState(decryptedPassword: String) {
+        if (decryptedPassword.isNotBlank()) {
+            copyToClipboard(decryptedPassword, requireContext())
+        }
+    }
+
     private fun onPasswordClicked(password: Password) {
-        navTo(R.id.action_homeFragment_to_passwordDetailFragment, bundleOf(TAG_PASSWORD_ID to password.id))
+        navTo(
+            R.id.action_homeFragment_to_passwordDetailFragment,
+            bundleOf(TAG_PASSWORD_ID to password.id)
+        )
     }
 
     private fun onCopyContentClicked(encryptedPassword: String) {
         viewModel.onEvent(HomeEvent.OnCopyClicked(encryptedPassword = encryptedPassword))
     }
 
-    private fun setupUiStates(
-        enableNotFoundContent: Boolean,
-        enableContentList: Boolean
-    ) {
-        binding.rvPasswords.enable(enableContentList)
-        binding.llNoResults.enable(enableNotFoundContent)
+    private fun showViews() {
+        with(binding) {
+            pbHome.enable(true)
+            fabNewPassword.enable(true)
+            etSearch.enable(true)
+            rvPasswords.enable(true)
+            llNoResults.enable(true)
+        }
+    }
+
+    private fun hideViews() {
+        with(binding) {
+            pbHome.enable(false)
+            fabNewPassword.enable(false)
+            etSearch.enable(false)
+            rvPasswords.enable(false)
+            llNoResults.enable(false)
+        }
     }
 }

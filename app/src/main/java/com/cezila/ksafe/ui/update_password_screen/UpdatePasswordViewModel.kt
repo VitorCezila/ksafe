@@ -48,7 +48,7 @@ class UpdatePasswordViewModel @Inject constructor(
                 url = password.url
             )
         } else {
-            _state.value = UpdatePasswordState.ShowError("Password Not found")
+            _state.value = UpdatePasswordState.UnknownError
         }
     }
 
@@ -67,16 +67,23 @@ class UpdatePasswordViewModel @Inject constructor(
             url = url
         )
         val result = passwordUseCases.updatePasswordUseCase(updatedPassword)
-        when(result) {
+        if(result.titleError != null) {
+            _state.value = UpdatePasswordState.TitleEmptyError
+        }
+        if(result.passwordError != null) {
+            _state.value = UpdatePasswordState.PasswordEmptyError
+        }
+        when(result.updateResult) {
             is Resource.Success -> {
                 _state.value = UpdatePasswordState.UpdateSuccess
-            }
-            is Resource.Error -> {
-                _state.value = UpdatePasswordState.ShowError(result.message)
             }
             is Resource.Loading -> {
                 _state.value = UpdatePasswordState.Loading
             }
+            is Resource.Error -> {
+                _state.value = UpdatePasswordState.UnknownError
+            }
+            else -> {}
         }
     }
 }

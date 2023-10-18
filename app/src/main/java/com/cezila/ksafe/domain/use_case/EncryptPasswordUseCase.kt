@@ -6,6 +6,10 @@ class EncryptPasswordUseCase(
     private val encryptionService: EncryptionService
 ) {
     operator fun invoke(password: String): String {
+        if(password.isEmpty()) {
+            return ""
+        }
+
         return encryptionService.encrypt(password)
     }
 }

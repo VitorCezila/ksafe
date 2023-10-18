@@ -1,27 +1,28 @@
 package com.cezila.ksafe.domain.use_case
 
-import com.cezila.ksafe.core.utils.Resource
-import com.cezila.ksafe.core.utils.SimpleResource
+import android.util.Log
 import com.cezila.ksafe.domain.model.Password
+import com.cezila.ksafe.domain.model.UpdatePasswordResult
 import com.cezila.ksafe.domain.repository.StorePasswordRepository
+import com.cezila.ksafe.domain.util.ValidationUtil
 
 class UpdatePasswordUseCase(
     private val storePasswordRepository: StorePasswordRepository
 ) {
 
-    suspend operator fun invoke(password: Password): SimpleResource {
-        if(password.title.isEmpty()) {
-            return Resource.Error(
-                message = "Title field cannot be empty"
-            )
-        }
-        if(password.encryptedPassword.isEmpty()) {
-            return Resource.Error(
-                message = "Password field cannot be empty"
+    suspend operator fun invoke(password: Password): UpdatePasswordResult {
+        val titleError = ValidationUtil.basicValidation(password.title)
+        val passwordError = ValidationUtil.basicValidation(password.encryptedPassword)
+
+        if (titleError != null || passwordError != null) {
+            return UpdatePasswordResult(
+                titleError = titleError,
+                passwordError = passwordError
             )
         }
 
-        return storePasswordRepository.updatePassword(password)
+        val updateResult = storePasswordRepository.updatePassword(password)
+        return UpdatePasswordResult(updateResult = updateResult)
     }
 
 }

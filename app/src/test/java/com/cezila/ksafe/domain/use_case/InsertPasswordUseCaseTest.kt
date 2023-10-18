@@ -4,11 +4,13 @@ import com.cezila.ksafe.core.encryption.EncryptionService
 import com.cezila.ksafe.core.utils.Resource
 import com.cezila.ksafe.data.keystore.FakeEncryptionServiceImpl
 import com.cezila.ksafe.data.repository.FakeStorePasswordRepositoryImpl
+import com.cezila.ksafe.domain.model.Errors
 import com.cezila.ksafe.domain.repository.StorePasswordRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -38,13 +40,15 @@ class InsertPasswordUseCaseTest {
             )
         }
 
-        assertTrue(result is Resource.Success)
+        assertTrue(result.insertResult is Resource.Success)
+        assertNull(result.passwordError)
+        assertNull(result.titleError)
         val passwords = repository.getPasswords()
         assertEquals(1, passwords.size)
     }
 
     @Test
-    fun `insertPassword with empty title should return error`() = runTest {
+    fun `insertPassword with empty title should return FieldEmpty error`() = runTest {
         val result = runBlocking {
             insertPasswordUseCase.invoke(
                 title = "",
@@ -54,14 +58,15 @@ class InsertPasswordUseCaseTest {
             )
         }
 
-        assertTrue(result is Resource.Error)
-        assertEquals("Title field cannot be empty", (result as Resource.Error).message)
+        assertTrue(result.titleError is Errors.FieldEmpty)
+        assertNull(result.insertResult)
+        assertNull(result.passwordError)
         val passwords = repository.getPasswords()
         assertTrue(passwords.isEmpty())
     }
 
     @Test
-    fun `insertPassword with empty password should return error`() = runTest {
+    fun `insertPassword with empty password should return FieldEmpty error`() = runTest {
         val result = runBlocking {
             insertPasswordUseCase.invoke(
                 title = "Example",
@@ -71,8 +76,9 @@ class InsertPasswordUseCaseTest {
             )
         }
 
-        assertTrue(result is Resource.Error)
-        assertEquals("Password field cannot be empty", (result as Resource.Error).message)
+        assertTrue(result.passwordError is Errors.FieldEmpty)
+        assertNull(result.insertResult)
+        assertNull(result.titleError)
         val passwords = repository.getPasswords()
         assertTrue(passwords.isEmpty())
     }
@@ -88,7 +94,9 @@ class InsertPasswordUseCaseTest {
             )
         }
 
-        assertTrue(result is Resource.Success)
+        assertTrue(result.insertResult is Resource.Success)
+        assertNull(result.passwordError)
+        assertNull(result.titleError)
         val passwords = repository.getPasswords()
         assertEquals(1, passwords.size)
     }
@@ -104,7 +112,9 @@ class InsertPasswordUseCaseTest {
             )
         }
 
-        assertTrue(result is Resource.Success)
+        assertTrue(result.insertResult is Resource.Success)
+        assertNull(result.passwordError)
+        assertNull(result.titleError)
         val passwords = repository.getPasswords()
         assertEquals(1, passwords.size)
     }
