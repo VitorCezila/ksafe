@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cezila.ksafe.core.utils.Constants.SEARCH_NEWS_TIME_DELAY
-import com.cezila.ksafe.domain.model.Password
 import com.cezila.ksafe.domain.use_case.DecryptPasswordUseCase
 import com.cezila.ksafe.domain.use_case.PasswordUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,36 +19,43 @@ class HomeViewModel @Inject constructor(
     private val decryptPasswordUseCase: DecryptPasswordUseCase
 ) : ViewModel() {
 
-    private val _passwords: MutableLiveData<List<Password?>> = MutableLiveData(emptyList())
-    val passwords: LiveData<List<Password?>> = _passwords
-
-    private val _copiedPassowrd: MutableLiveData<String> = MutableLiveData("")
-    val copiedPassword: LiveData<String> = _copiedPassowrd
+    private val _state = MutableLiveData<HomeState>(HomeState.Opened)
+    val state: LiveData<HomeState> = _state
 
     private var job: Job? = null
-
-    init {
-        viewModelScope.launch {
-            _passwords.value = passwordUseCases.getPasswordsUseCase()
-        }
-    }
 
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.OnCopyClicked -> {
-                _copiedPassowrd.value = decryptPasswordUseCase(event.encryptedPassword)
-                _copiedPassowrd.value = ""
+                decryptPassword(event.encryptedPassword)
+
             }
             is HomeEvent.OnSearch -> {
-                job?.cancel()
-                job = viewModelScope.launch {
-                    delay(SEARCH_NEWS_TIME_DELAY)
-                    if (event.query.isNotEmpty()) {
-                        _passwords.value = passwordUseCases.searchPasswordUseCase(event.query)
-                    } else
-                        _passwords.value = passwordUseCases.getPasswordsUseCase()
+                fetchPasswordByQuery(event.query)
+            }
+            is HomeEvent.GetAllPasswords -> {
+                _state.value = HomeState.Loading
+                viewModelScope.launch {
+                    _state.value = HomeState.FetchPasswordResult(passwordUseCases.getPasswordsUseCase())
                 }
             }
+        }
+    }
+
+    private fun decryptPassword(encryptedPassword: String) {
+        _state.value = HomeState.CopiedPassword(decryptPasswordUseCase(encryptedPassword))
+        _state.value = HomeState.CopiedPassword("")
+    }
+
+    private fun fetchPasswordByQuery(query: String) {
+        job?.cancel()
+        job = viewModelScope.launch {
+            delay(SEARCH_NEWS_TIME_DELAY)
+            if (query.isNotEmpty()) {
+                _state.value =
+                    HomeState.FetchPasswordResult(passwordUseCases.searchPasswordUseCase(query))
+            } else
+                _state.value = HomeState.FetchPasswordResult(passwordUseCases.getPasswordsUseCase())
         }
     }
 }
