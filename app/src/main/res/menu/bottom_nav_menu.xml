@@ -3,13 +3,13 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/analyzePasswordFragment"
         android:icon="@drawable/ic_analysis"
-        android:title="Analysis" />
+        android:title="@string/analysis" />
     <item
         android:id="@+id/generatePasswordFragment"
         android:icon="@drawable/ic_generate"
-        android:title="Generate" />
+        android:title="@string/generate" />
 </menu>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -12,10 +13,10 @@ import com.cezila.ksafe.R
 import com.cezila.ksafe.databinding.FragmentUpdatePasswordBinding
 import com.cezila.ksafe.ui.utils.ArgumentsId.TAG_PASSWORD_ID
 import com.cezila.ksafe.ui.utils.enable
+import com.cezila.ksafe.ui.utils.hideBottomNavView
 import com.cezila.ksafe.ui.utils.navTo
 import com.cezila.ksafe.ui.utils.showSnackbar
 import com.cezila.ksafe.ui.utils.toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,15 +34,28 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
-            View.GONE
         binding = FragmentUpdatePasswordBinding.inflate(inflater)
+        addOnBackPressedCallback()
+        hideBottomNavView(R.id.bottom_navigation_view)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeState()
+    }
+
+    private fun addOnBackPressedCallback() {
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navTo(
+                        R.id.action_updatePasswordFragment_to_passwordDetailFragment,
+                        bundleOf(TAG_PASSWORD_ID to passwordId)
+                    )
+                }
+            })
     }
 
     private fun observeState() {
@@ -112,7 +126,10 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
             }
 
             binding.btnBack.setOnClickListener {
-                requireActivity().onBackPressed()
+                navTo(
+                    R.id.action_updatePasswordFragment_to_passwordDetailFragment,
+                    bundleOf(TAG_PASSWORD_ID to passwordId)
+                )
             }
 
             pbUpdate.enable(false)
@@ -124,9 +141,7 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
     }
 
     private fun renderUpdateSuccessState() {
-        view?.let {
-            showSnackbar(it, "Password updated successfully")
-        }
+        showSnackbar("Password updated successfully")
         navTo(
             R.id.action_updatePasswordFragment_to_passwordDetailFragment,
             bundleOf(TAG_PASSWORD_ID to passwordId)
