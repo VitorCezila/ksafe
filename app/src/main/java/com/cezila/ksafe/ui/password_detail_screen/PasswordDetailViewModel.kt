@@ -38,7 +38,7 @@ class PasswordDetailViewModel @Inject constructor(
                         id = password.id,
                         title = password.title,
                         decryptedPassword = decryptedPassword,
-                        creationTimestamp = password.creationTimestamp.toString(),
+                        creationTimestamp = password.getFormattedCreationTimeStamp(),
                         login = password.login,
                         url = password.url
                     )
