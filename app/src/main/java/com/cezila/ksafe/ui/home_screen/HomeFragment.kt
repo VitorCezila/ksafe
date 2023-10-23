@@ -1,8 +1,10 @@
 package com.cezila.ksafe.ui.home_screen
 
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ import com.cezila.ksafe.ui.utils.ArgumentsId.TAG_PASSWORD_ID
 import com.cezila.ksafe.ui.utils.MarginItemDecoration
 import com.cezila.ksafe.ui.utils.enable
 import com.cezila.ksafe.ui.utils.navTo
+import com.cezila.ksafe.ui.utils.showBottomNavView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,21 +27,53 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater)
+        showBottomNavView(R.id.bottom_navigation_view)
+        addOnBackPressedCallback()
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentHomeBinding.bind(view)
         initViews()
         observeState()
     }
 
+    private fun addOnBackPressedCallback() {
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
+    }
+
     private fun initViews() {
-        binding.rvPasswords.apply {
+        setupRecyclerView()
+        setupFab()
+        setupSearchEditText()
+    }
+
+    private fun setupRecyclerView() {
+        with(binding.rvPasswords) {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.mergin)))
         }
+    }
+
+    private fun setupFab() {
         binding.fabNewPassword.setOnClickListener {
             navTo(R.id.action_homeFragment_to_createPasswordFragment)
         }
+    }
+
+    private fun setupSearchEditText() {
         binding.etSearch.addTextChangedListener {
             viewModel.onEvent(HomeEvent.OnSearch(it.toString()))
         }

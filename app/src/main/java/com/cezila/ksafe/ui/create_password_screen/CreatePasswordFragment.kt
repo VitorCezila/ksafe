@@ -1,16 +1,18 @@
 package com.cezila.ksafe.ui.create_password_screen
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.cezila.ksafe.R
 import com.cezila.ksafe.databinding.FragmentCreatePasswordBinding
 import com.cezila.ksafe.ui.utils.enable
+import com.cezila.ksafe.ui.utils.hideBottomNavView
 import com.cezila.ksafe.ui.utils.navTo
 import com.cezila.ksafe.ui.utils.showSnackbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,12 +21,29 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
     private val viewModel: CreatePasswordViewModel by viewModels()
     private lateinit var binding: FragmentCreatePasswordBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentCreatePasswordBinding.inflate(inflater)
+        hideBottomNavView(R.id.bottom_navigation_view)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentCreatePasswordBinding.bind(view)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
-            View.GONE
+        setupUI()
         observeState()
+    }
+
+    private fun setupUI() {
+        with(binding) {
+            btnSave.setOnClickListener { createPassword() }
+            btnBack.setOnClickListener { navTo(R.id.action_createPasswordFragment_to_homeFragment) }
+            etName.doOnTextChanged { _, _, _, _ -> tiName.error = null }
+            etPassword.doOnTextChanged { _, _, _, _ -> tiPassword.error = null }
+        }
     }
 
     private fun observeState() {
@@ -39,29 +58,21 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
         }
     }
 
+    private fun createPassword() {
+        with(binding) {
+            val title = etName.text.toString()
+            val password = etPassword.text.toString()
+            val login = etLogin.text.toString()
+            val url = etUrl.text.toString()
+
+            viewModel.onEvent(CreatePasswordEvent.OnCreateClicked(title, password, login, url))
+        }
+    }
+
     private fun renderOpenedState() {
         with(binding) {
             showViews()
             pbCreatePassword.enable(false)
-            btnSave.setOnClickListener {
-                viewModel.onEvent(
-                    CreatePasswordEvent.OnCreateClicked(
-                        title = binding.etName.text.toString(),
-                        password = binding.etPassword.text.toString(),
-                        login = binding.etLogin.text.toString(),
-                        url = binding.etUrl.text.toString()
-                    )
-                )
-            }
-            btnBack.setOnClickListener {
-                navTo(R.id.action_createPasswordFragment_to_homeFragment)
-            }
-            etName.doOnTextChanged { _, _, _, _ ->
-                tiName.error = null
-            }
-            etPassword.doOnTextChanged { _, _, _, _ ->
-                tiPassword.error = null
-            }
         }
     }
 
@@ -87,7 +98,7 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
         binding.pbCreatePassword.enable(false)
         clearEditTexts()
         view?.let {
-            showSnackbar(it, "Password created successfully")
+            showSnackbar("Password created successfully")
         }
     }
 

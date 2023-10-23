@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,8 +13,8 @@ import com.cezila.ksafe.core.utils.copyToClipboard
 import com.cezila.ksafe.databinding.FragmentPasswordDetailBinding
 import com.cezila.ksafe.ui.utils.ArgumentsId.TAG_PASSWORD_ID
 import com.cezila.ksafe.ui.utils.enable
+import com.cezila.ksafe.ui.utils.hideBottomNavView
 import com.cezila.ksafe.ui.utils.navTo
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,15 +34,25 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
-            View.GONE
         binding = FragmentPasswordDetailBinding.inflate(inflater)
+        hideBottomNavView(R.id.bottom_navigation_view)
+        addOnBackPressedCallback()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeState()
+    }
+
+    private fun addOnBackPressedCallback() {
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navTo(R.id.action_passwordDetailFragment_to_homeFragment)
+                }
+            })
     }
 
     private fun observeState() {
@@ -68,7 +79,7 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
 
     private fun renderShowErrorState() {
         hideViews()
-        binding.tvDetailError.text = "Try Again Later"
+        binding.tvDetailError.text = getString(R.string.error_message_try_again_later)
         binding.tvDetailError.enable(true)
     }
 
@@ -156,6 +167,7 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
             ivPasswordLock.enable(false)
             rlPassword.enable(false)
             llButtons.enable(false)
+            btnBack.enable(false)
         }
     }
 
@@ -173,6 +185,7 @@ class PasswordDetailFragment : Fragment(R.layout.fragment_password_detail) {
             ivPasswordLock.enable(true)
             rlPassword.enable(true)
             llButtons.enable(true)
+            btnBack.enable(true)
         }
     }
 

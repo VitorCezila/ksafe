@@ -17,10 +17,14 @@
     <string name="create_a_new_record">Create a new record</string>
     <string name="search">Search…</string>
     <string name="no_results">No results</string>
-    <string name="data_not_found">Não conseguimos encontrar nenhuma senha</string>
+    <string name="data_not_found">We can\'t find any password</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
     <string name="update_error">Update Error</string>
     <string name="save_changes">Save Changes</string>
+    <string name="generate">Generate</string>
+    <string name="analysis">Analysis</string>
+    <string name="home">Home</string>
+    <string name="error_message_try_again_later">Try Again Later</string>
 
 </resources>

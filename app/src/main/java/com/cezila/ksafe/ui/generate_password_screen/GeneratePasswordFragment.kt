@@ -10,6 +10,7 @@ import com.cezila.ksafe.R
 import com.cezila.ksafe.core.utils.copyToClipboard
 import com.cezila.ksafe.databinding.FragmentGeneratePasswordBinding
 import com.cezila.ksafe.ui.utils.enable
+import com.cezila.ksafe.ui.utils.showBottomNavView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,7 @@ class GeneratePasswordFragment : Fragment(R.layout.fragment_generate_password) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGeneratePasswordBinding.inflate(inflater)
+        showBottomNavView(R.id.bottom_navigation_view)
         return binding.root
     }
 

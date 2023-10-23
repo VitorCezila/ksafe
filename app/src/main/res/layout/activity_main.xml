@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.app.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -25,6 +25,7 @@
         app:backgroundTint="?attr/colorSurfaceContainer"
         app:itemActiveIndicatorStyle="?attr/colorSurfaceContainer"
         app:itemRippleColor="?attr/colorPrimary"
+        app:itemTextColor="@color/bottom_navigation_color_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

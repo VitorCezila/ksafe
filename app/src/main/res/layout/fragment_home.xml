@@ -51,6 +51,8 @@
         android:background="@drawable/bg_edittext_selector"
         android:drawableStart="@drawable/ic_search"
         android:hint="@string/search"
+        android:inputType="text"
+        android:textColor="?attr/colorOnSurface"
         android:textColorHint="#888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
