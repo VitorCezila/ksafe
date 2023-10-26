@@ -80,6 +80,9 @@ dependencies {
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.room:room-testing:2.5.2")
 
+    // Preferences
+    implementation("androidx.preference:preference:1.2.0")
+
     // Mockito
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 
