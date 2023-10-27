@@ -1,7 +1,6 @@
 package com.cezila.ksafe.ui.home_screen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
+    private val mAdapter = HomeAdapter(
+        onItemClicked = ::onPasswordClicked,
+        onCopyClicked = ::onCopyContentClicked
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,8 +69,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView() {
         with(binding.rvPasswords) {
+            adapter = mAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.mergin)))
+            setupSwipeToDelete()
         }
     }
 
@@ -128,7 +133,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun renderFetchPasswordResult(passwords: List<Password?>) {
         with(binding) {
             showViews()
-            setupSwipeToDelete(passwords)
             pbHome.enable(false)
             if (passwords.isEmpty()) {
                 rvPasswords.enable(false)
@@ -136,12 +140,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             } else {
                 rvPasswords.enable(true)
                 llNoResults.enable(false)
-                rvPasswords.adapter = HomeAdapter(
-                    passwords = passwords,
-                    onItemClicked = ::onPasswordClicked,
-                    onCopyClicked = ::onCopyContentClicked
-                )
             }
+            mAdapter.submitList(passwords)
         }
     }
 
@@ -162,7 +162,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.onEvent(HomeEvent.OnCopyClicked(encryptedPassword = encryptedPassword))
     }
 
-    private fun setupSwipeToDelete(passwords: List<Password?>) {
+    private fun setupSwipeToDelete() {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT
@@ -172,18 +172,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                Log.d("HomeFragment", "onMove")
                 return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                Log.d("HomeFragment", "onSwiped")
                 try {
-                    val position = viewHolder.adapterPosition
-                    val password = passwords[position]
-                    password?.let {
-                        viewModel.onEvent(HomeEvent.SwipedToDelete(it))
-                    }
+                    val password =  mAdapter.currentList[viewHolder.adapterPosition]
+                    viewModel.onEvent(HomeEvent.SwipedToDelete(password))
                 } catch (e: IndexOutOfBoundsException) {
                     showSnackbar(getString(R.string.unknown_error))
                     viewModel.onEvent(HomeEvent.GetAllPasswords)

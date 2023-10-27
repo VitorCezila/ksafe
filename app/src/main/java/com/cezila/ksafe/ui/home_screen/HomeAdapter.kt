@@ -5,22 +5,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cezila.ksafe.R
 import com.cezila.ksafe.domain.model.Password
 
 class HomeAdapter(
-    private val passwords: List<Password?>,
     private val onItemClicked: (password: Password) -> Unit,
     private val onCopyClicked: (encryptedPassword: String) -> Unit
-) :
-    RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+) : ListAdapter<Password, HomeAdapter.HomeViewHolder>(DiffCallback()) {
 
     inner class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val iconTextView: TextView = itemView.findViewById(R.id.tv_icon)
-        val titleTextView: TextView = itemView.findViewById(R.id.tv_title)
-        val loginTextView: TextView = itemView.findViewById(R.id.tv_login)
-        val copyButton: ImageView = itemView.findViewById(R.id.btn_copy)
+        private val iconTextView: TextView = itemView.findViewById(R.id.tv_icon)
+        private val titleTextView: TextView = itemView.findViewById(R.id.tv_title)
+        private val loginTextView: TextView = itemView.findViewById(R.id.tv_login)
+        private val copyButton: ImageView = itemView.findViewById(R.id.btn_copy)
+
+        fun bind(password: Password) {
+            iconTextView.text = extractInitials(password.title)
+            titleTextView.text = password.title
+            loginTextView.text = password.login
+            copyButton.setOnClickListener {
+                onCopyClicked(password.encryptedPassword)
+            }
+            itemView.setOnClickListener {
+                onItemClicked(password)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -30,25 +42,8 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val password = passwords[position]
-
-        holder.iconTextView.text = extractInitials(password?.title ?: "")
-        holder.titleTextView.text = password?.title
-        holder.loginTextView.text = password?.login
-        holder.copyButton.setOnClickListener {
-            if (password != null) {
-                onCopyClicked(password.encryptedPassword)
-            }
-        }
-        holder.itemView.setOnClickListener {
-            if (password != null) {
-                onItemClicked(password)
-            }
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return passwords.size
+        val password = getItem(position)
+        holder.bind(password)
     }
 
     private fun extractInitials(text: String): String {
@@ -60,5 +55,13 @@ class HomeAdapter(
             }
         }
         return initials.toString().toUpperCase()
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<Password>() {
+        override fun areItemsTheSame(oldItem: Password, newItem: Password) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: Password, newItem: Password) =
+            oldItem == newItem
     }
 }
