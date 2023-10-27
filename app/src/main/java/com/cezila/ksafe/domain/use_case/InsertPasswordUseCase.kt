@@ -37,4 +37,21 @@ class InsertPasswordUseCase(
         return InsertPasswordResult(insertResult = result)
     }
 
+    suspend operator fun invoke(
+        password: Password
+    ): InsertPasswordResult {
+        val titleError = ValidationUtil.basicValidation(password.title)
+        val passwordError = ValidationUtil.basicValidation(password.encryptedPassword)
+
+        if (titleError != null || passwordError != null) {
+            return InsertPasswordResult(
+                titleError = titleError,
+                passwordError = passwordError
+            )
+        }
+
+        val result = storePasswordRepository.insertPassword(password)
+        return InsertPasswordResult(insertResult = result)
+    }
+
 }

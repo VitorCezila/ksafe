@@ -84,13 +84,13 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
     private fun renderTitleEmptyError() {
         showViews()
         binding.pbCreatePassword.enable(false)
-        binding.tiName.error = "Title field cannot be empty"
+        binding.tiName.error = getString(R.string.msg_name_field_empty_error)
     }
 
     private fun renderPasswordEmptyError() {
         showViews()
         binding.pbCreatePassword.enable(false)
-        binding.tiPassword.error = "Password field cannot be empty"
+        binding.tiPassword.error = getString(R.string.msg_password_field_empty_error)
     }
 
     private fun renderInsertPasswordSuccess() {
@@ -98,7 +98,7 @@ class CreatePasswordFragment : Fragment(R.layout.fragment_create_password) {
         binding.pbCreatePassword.enable(false)
         clearEditTexts()
         view?.let {
-            showSnackbar("Password created successfully")
+            showSnackbar(getString(R.string.msg_password_created_successfully))
         }
     }
 

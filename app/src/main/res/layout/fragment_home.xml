@@ -65,6 +65,7 @@
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:paddingStart="8dp"
+        android:longClickable="false"
         android:paddingEnd="8dp"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
