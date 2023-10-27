@@ -9,7 +9,9 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cezila.ksafe.R
 import com.cezila.ksafe.core.utils.copyToClipboard
 import com.cezila.ksafe.databinding.FragmentHomeBinding
@@ -19,6 +21,7 @@ import com.cezila.ksafe.ui.utils.MarginItemDecoration
 import com.cezila.ksafe.ui.utils.enable
 import com.cezila.ksafe.ui.utils.navTo
 import com.cezila.ksafe.ui.utils.showBottomNavView
+import com.cezila.ksafe.ui.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +29,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
+    private val mAdapter = HomeAdapter(
+        onItemClicked = ::onPasswordClicked,
+        onCopyClicked = ::onCopyContentClicked
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,8 +69,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView() {
         with(binding.rvPasswords) {
+            adapter = mAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.mergin)))
+            setupSwipeToDelete()
         }
     }
 
@@ -86,7 +95,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is HomeState.Loading -> renderLoadingState()
                 is HomeState.FetchPasswordResult -> renderFetchPasswordResult(state.passwords)
                 is HomeState.CopiedPassword -> renderCopiedPasswordState(state.decryptedPassword)
+                is HomeState.PasswordDeletedSuccessfully -> renderPasswordDeletedSuccessfully(state.password)
+                is HomeState.UndoError -> renderUndoError()
             }
+        }
+    }
+
+    private fun renderUndoError() {
+        with(binding) {
+            showViews()
+            pbHome.enable(false)
+            llNoResults.enable(false)
+            showSnackbar(getString(R.string.msg_error_to_delete_password))
+        }
+    }
+
+    private fun renderPasswordDeletedSuccessfully(password: Password) {
+        showSnackbar(
+            message = getString(R.string.msg_password_deleted_successfully),
+            actionText = getString(R.string.undo)
+        ) {
+            undoPasswordDelete(password)
         }
     }
 
@@ -111,13 +140,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             } else {
                 rvPasswords.enable(true)
                 llNoResults.enable(false)
-                rvPasswords.adapter = HomeAdapter(
-                    passwords = passwords,
-                    onItemClicked = ::onPasswordClicked,
-                    onCopyClicked = ::onCopyContentClicked
-                )
-
             }
+            mAdapter.submitList(passwords)
         }
     }
 
@@ -136,6 +160,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun onCopyContentClicked(encryptedPassword: String) {
         viewModel.onEvent(HomeEvent.OnCopyClicked(encryptedPassword = encryptedPassword))
+    }
+
+    private fun setupSwipeToDelete() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                try {
+                    val password =  mAdapter.currentList[viewHolder.adapterPosition]
+                    viewModel.onEvent(HomeEvent.SwipedToDelete(password))
+                } catch (e: IndexOutOfBoundsException) {
+                    showSnackbar(getString(R.string.unknown_error))
+                    viewModel.onEvent(HomeEvent.GetAllPasswords)
+                }
+
+            }
+
+        }).attachToRecyclerView(binding.rvPasswords)
+    }
+
+    private fun undoPasswordDelete(password: Password) {
+        viewModel.onEvent(HomeEvent.UndoPasswordDelete(password))
+        binding.etSearch.setText("")
     }
 
     private fun showViews() {

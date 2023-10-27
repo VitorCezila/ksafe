@@ -79,12 +79,12 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
 
     private fun renderPasswordEmptyErrorState() {
         binding.pbUpdate.enable(false)
-        binding.tiPassword.error = "Password field cannot be empty"
+        binding.tiPassword.error = getString(R.string.msg_password_field_empty_error)
     }
 
     private fun renderTitleEmptyError() {
         binding.pbUpdate.enable(false)
-        binding.tiName.error = "Name field cannot be empty"
+        binding.tiName.error = getString(R.string.msg_name_field_empty_error)
     }
 
     private fun renderShowPasswordInfoState(
@@ -137,11 +137,11 @@ class UpdatePasswordFragment : Fragment(R.layout.fragment_update_password) {
     }
 
     private fun renderUnknownErrorState() {
-        toast("Unknown Error")
+        toast(getString(R.string.unknown_error))
     }
 
     private fun renderUpdateSuccessState() {
-        showSnackbar("Password updated successfully")
+        showSnackbar(getString(R.string.msg_password_update_successfully))
         navTo(
             R.id.action_updatePasswordFragment_to_passwordDetailFragment,
             bundleOf(TAG_PASSWORD_ID to passwordId)
