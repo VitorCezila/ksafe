@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PasswordManager"
+rootProject.name = "KSafe"
 include(":app")
